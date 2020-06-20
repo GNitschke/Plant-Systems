@@ -7,6 +7,8 @@ public class TurnManager : MonoBehaviour
     public Soil[] board;
 
     public int turn;
+
+    public GameObject currentPlant;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,6 +18,27 @@ public class TurnManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //test
+        if (Input.GetMouseButtonDown(0))
+        {
+            RaycastHit hit;
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                hit.transform.GetComponent<Soil>().Plant("flower");
+            }
+        }
     }
+
+    /*
+    public int GetTurn()
+    {
+        return turn;
+    }
+
+    public GameObject GetPlant()
+    {
+        return currentPlant;
+    }
+    */
 }
