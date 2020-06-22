@@ -28,17 +28,13 @@ public class TurnManager : MonoBehaviour
                 hit.transform.GetComponent<Soil>().Plant("flower");
             }
         }
-    }
 
-    /*
-    public int GetTurn()
-    {
-        return turn;
+        if (Input.GetKeyUp(KeyCode.Space))
+        {
+            foreach(Soil s in board)
+            {
+                s.Grow();
+            }
+        }
     }
-
-    public GameObject GetPlant()
-    {
-        return currentPlant;
-    }
-    */
 }
