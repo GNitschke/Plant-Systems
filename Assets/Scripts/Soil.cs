@@ -10,6 +10,7 @@ public class Soil : MonoBehaviour
     public int growth;
 
     private GameObject plantObject;
+    private GameObject currentStageObject;
     public Flora plant;
 
     public struct neighbors
@@ -31,6 +32,7 @@ public class Soil : MonoBehaviour
         growth = 0;
         plantObject = Instantiate(turnManager.currentPlant);
         plant = plantObject.GetComponent<Flora>();
+        currentStageObject = Instantiate(plant.stages[plant.currStage].model);
     }
 
     public void Grow()
@@ -42,6 +44,8 @@ public class Soil : MonoBehaviour
             if (plant.currStage < plant.stages.Length - 1 && growth >= current.nextStage && Random.Range(0, current.variation) > 0.5)
             {
                 plant.currStage++;
+                Destroy(currentStageObject);
+                currentStageObject = Instantiate(plant.stages[plant.currStage].model);
                 growth = 0;
             }
         }
