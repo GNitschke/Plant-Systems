@@ -43,8 +43,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aae18223deb8cc48a5f1da2547328fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  board:
-  - {fileID: 0}
+  boardWidth: 3
+  boardLength: 3
+  field: {fileID: 8755263493154438548, guid: ec0ef094208a1a24cb0c5aa9e00d5155, type: 3}
   turn: 0
   currentPlant: {fileID: 1795830783630501355, guid: bc9e18ace492ce541bcf3c08be64bd99,
     type: 3}

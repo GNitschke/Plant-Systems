@@ -32,7 +32,7 @@ public class Soil : MonoBehaviour
         growth = 0;
         plantObject = Instantiate(turnManager.currentPlant);
         plant = plantObject.GetComponent<Flora>();
-        currentStageObject = Instantiate(plant.stages[plant.currStage].model);
+        currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform);
     }
 
     public void Grow()
@@ -45,7 +45,7 @@ public class Soil : MonoBehaviour
             {
                 plant.currStage++;
                 Destroy(currentStageObject);
-                currentStageObject = Instantiate(plant.stages[plant.currStage].model);
+                currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform);
                 growth = 0;
             }
         }

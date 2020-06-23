@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class TurnManager : MonoBehaviour
 {
-    public Soil[] board;
+    public int boardWidth = 5;
+    public int boardLength = 5;
+
+    public GameObject field;
+
+    public Soil[,] board;
 
     public int turn;
 
@@ -13,6 +18,8 @@ public class TurnManager : MonoBehaviour
     void Start()
     {
         turn = 0;
+        board = new Soil[boardWidth, boardLength];
+        GenerateBoard();
     }
 
     // Update is called once per frame
@@ -31,9 +38,23 @@ public class TurnManager : MonoBehaviour
 
         if (Input.GetKeyUp(KeyCode.Space))
         {
-            foreach(Soil s in board)
+            for (int i = 0; i < boardWidth; i++)
             {
-                s.Grow();
+                for (int j = 0; j < boardLength; j++)
+                {
+                    board[i,j].Grow();
+                }
+            }
+        }
+    }
+
+    private void GenerateBoard()
+    {
+        for(int i = 0; i < boardWidth; i++)
+        {
+            for(int j = 0; j < boardLength; j++)
+            {
+                board[i, j] = GameObject.Find("Field"+ i + "" + j).GetComponent<Soil>();
             }
         }
     }
