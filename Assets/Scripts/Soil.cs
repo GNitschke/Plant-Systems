@@ -24,15 +24,29 @@ public class Soil : MonoBehaviour
     void Start()
     {
         turnManager = GameObject.Find("TurnManager").GetComponent<TurnManager>();
+        plantObject = null;
+        plant = null;
     }
 
     public void Plant(string seed)
     {
-        name = seed;
-        growth = 0;
-        plantObject = Instantiate(turnManager.currentPlant);
-        plant = plantObject.GetComponent<Flora>();
-        currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform);
+        if (plantObject == null)
+        {
+            Debug.Log("Planted");
+            name = seed;
+            growth = 0;
+            plantObject = Instantiate(turnManager.currentPlant);
+            plant = plantObject.GetComponent<Flora>();
+            currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform);
+        }
+        else
+        {
+            Debug.Log("Ripped up");
+            Destroy(plantObject);
+            Destroy(currentStageObject);
+            plantObject = null;
+            plant = null;
+        }
     }
 
     public void Grow()

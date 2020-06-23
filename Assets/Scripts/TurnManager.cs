@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
@@ -12,12 +13,15 @@ public class TurnManager : MonoBehaviour
     public Soil[,] board;
 
     public int turn;
+    public Text turnNumber;
 
     public GameObject currentPlant;
     // Start is called before the first frame update
     void Start()
     {
         turn = 0;
+        turnNumber = transform.Find("Canvas").Find("Turn").GetComponent<Text>();
+        turnNumber.text = "" + turn;
         board = new Soil[boardWidth, boardLength];
         GenerateBoard();
     }
@@ -30,20 +34,22 @@ public class TurnManager : MonoBehaviour
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit, float.PositiveInfinity, 1 << 9) && hit.transform.GetComponent<Soil>() != null)
             {
                 hit.transform.GetComponent<Soil>().Plant("flower");
             }
         }
+    }
 
-        if (Input.GetKeyUp(KeyCode.Space))
+    public void NextTurn()
+    {
+        turn++;
+        turnNumber.text = "" + turn;
+        for (int i = 0; i < boardWidth; i++)
         {
-            for (int i = 0; i < boardWidth; i++)
+            for (int j = 0; j < boardLength; j++)
             {
-                for (int j = 0; j < boardLength; j++)
-                {
-                    board[i,j].Grow();
-                }
+                board[i, j].Grow();
             }
         }
     }
