@@ -12,6 +12,8 @@ public class Flora : MonoBehaviour
         public GameObject model;
     };
 
+    //public string name;
+
     public growthStage[] stages;
 
     public int currStage;

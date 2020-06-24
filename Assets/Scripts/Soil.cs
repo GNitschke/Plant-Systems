@@ -6,7 +6,7 @@ public class Soil : MonoBehaviour
 {
     public TurnManager turnManager;
 
-    public string name;
+    //public string name;
     public int growth;
 
     private GameObject plantObject;
@@ -28,24 +28,35 @@ public class Soil : MonoBehaviour
         plant = null;
     }
 
-    public void Plant(string seed)
+    public void Use(GameObject toBeUsed)
     {
-        if (plantObject == null)
+        if (plantObject == null && toBeUsed.GetComponent<Flora>() != null)
         {
             Debug.Log("Planted");
-            name = seed;
+            //name = item;
             growth = 0;
-            plantObject = Instantiate(turnManager.currentPlant);
+            plantObject = Instantiate(toBeUsed);
             plant = plantObject.GetComponent<Flora>();
             currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform);
         }
+        else if(toBeUsed.GetComponent<Tool>() != null)
+        {
+            if (toBeUsed.name == "Shovel" && plantObject != null)
+            {
+                Debug.Log("Ripped up");
+                Destroy(plantObject);
+                Destroy(currentStageObject);
+                plantObject = null;
+                plant = null;
+            }
+            else
+            {
+                Debug.Log(toBeUsed.name + " cannot be used here.");
+            }
+        }
         else
         {
-            Debug.Log("Ripped up");
-            Destroy(plantObject);
-            Destroy(currentStageObject);
-            plantObject = null;
-            plant = null;
+            Debug.Log("Not a valid item to use");
         }
     }
 

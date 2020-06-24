@@ -15,11 +15,12 @@ public class TurnManager : MonoBehaviour
     public int turn;
     public Text turnNumber;
 
-    public GameObject currentPlant;
+    public GameObject currentItem;
     // Start is called before the first frame update
     void Start()
     {
         turn = 0;
+        currentItem = null;
         turnNumber = transform.Find("Canvas").Find("Turn").GetComponent<Text>();
         turnNumber.text = "" + turn;
         board = new Soil[boardWidth, boardLength];
@@ -36,7 +37,21 @@ public class TurnManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, float.PositiveInfinity, 1 << 9) && hit.transform.GetComponent<Soil>() != null)
             {
-                hit.transform.GetComponent<Soil>().Plant("flower");
+                if (currentItem != null)
+                    hit.transform.GetComponent<Soil>().Use(currentItem);
+                else
+                    Debug.Log("Please select an item");
+            }
+        }
+    }
+
+    private void GenerateBoard()
+    {
+        for(int i = 0; i < boardWidth; i++)
+        {
+            for(int j = 0; j < boardLength; j++)
+            {
+                board[i, j] = GameObject.Find("Field"+ i + "" + j).GetComponent<Soil>();
             }
         }
     }
@@ -54,14 +69,9 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    private void GenerateBoard()
+    public void SelectItem(GameObject toBeUsed)
     {
-        for(int i = 0; i < boardWidth; i++)
-        {
-            for(int j = 0; j < boardLength; j++)
-            {
-                board[i, j] = GameObject.Find("Field"+ i + "" + j).GetComponent<Soil>();
-            }
-        }
+        currentItem = toBeUsed;
+        Debug.Log("Selected: " + currentItem.name);
     }
 }
