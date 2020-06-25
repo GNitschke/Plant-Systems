@@ -43,4 +43,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: decd11fad2ebed54e8199f581aff1e68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: shovel
+  energyRequired: 2
+  powerUse: 0

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Flora : MonoBehaviour
+public class Flora : Item
 {
     [System.Serializable]
     public struct growthStage
@@ -16,10 +16,5 @@ public class Flora : MonoBehaviour
 
     public growthStage[] stages;
 
-    public int currStage;
-
-    void Start()
-    {
-        currStage = 0;
-    }
+    public int currStage = 0;
 }

@@ -43,6 +43,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7436a4c30366cfd41af4e7d4e14fc8d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  energyRequired: 1
   stages:
   - nextStage: 3
     variation: 5
@@ -53,4 +54,4 @@ MonoBehaviour:
   - nextStage: 0
     variation: 0
     model: {fileID: 5716464481985457073, guid: 8ee09f5252791224685363a405f3d079, type: 3}
-  currStage: 0
+  currStage: 1

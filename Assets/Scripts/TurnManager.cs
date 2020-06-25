@@ -12,17 +12,23 @@ public class TurnManager : MonoBehaviour
 
     public Soil[,] board;
 
-    public int turn;
-    public Text turnNumber;
+    private int turn;
+    private Text turnUI;
+
+    private int energy;
+    private Text energyUI;
 
     public GameObject currentItem;
     // Start is called before the first frame update
     void Start()
     {
         turn = 0;
+        energy = 4;
         currentItem = null;
-        turnNumber = transform.Find("Canvas").Find("Turn").GetComponent<Text>();
-        turnNumber.text = "" + turn;
+        turnUI = transform.Find("Canvas").Find("Turn").GetComponent<Text>();
+        turnUI.text = "Turn: " + turn;
+        energyUI = transform.Find("Canvas").Find("Energy").GetComponent<Text>();
+        energyUI.text = "Energy: " + energy;
         board = new Soil[boardWidth, boardLength];
         GenerateBoard();
     }
@@ -37,8 +43,11 @@ public class TurnManager : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit, float.PositiveInfinity, 1 << 9) && hit.transform.GetComponent<Soil>() != null)
             {
-                if (currentItem != null)
-                    hit.transform.GetComponent<Soil>().Use(currentItem);
+                if (currentItem != null && energy >= currentItem.GetComponent<Item>().energyRequired)
+                {
+                    energy -= hit.transform.GetComponent<Soil>().Use(currentItem);
+                    energyUI.text = "Energy: " + energy;
+                }
                 else
                     Debug.Log("Please select an item");
             }
@@ -59,7 +68,9 @@ public class TurnManager : MonoBehaviour
     public void NextTurn()
     {
         turn++;
-        turnNumber.text = "" + turn;
+        turnUI.text = "Turn: " + turn;
+        energy++;
+        energyUI.text = "Energy: " + energy;
         for (int i = 0; i < boardWidth; i++)
         {
             for (int j = 0; j < boardLength; j++)

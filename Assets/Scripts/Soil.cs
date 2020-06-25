@@ -28,7 +28,7 @@ public class Soil : MonoBehaviour
         plant = null;
     }
 
-    public void Use(GameObject toBeUsed)
+    public int Use(GameObject toBeUsed)
     {
         if (plantObject == null && toBeUsed.GetComponent<Flora>() != null)
         {
@@ -38,12 +38,14 @@ public class Soil : MonoBehaviour
             plantObject = Instantiate(toBeUsed);
             plant = plantObject.GetComponent<Flora>();
             currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform);
+            toBeUsed.GetComponent<Item>().energyRequired = plant.currStage;
         }
         else if(toBeUsed.GetComponent<Tool>() != null)
         {
             if (toBeUsed.name == "Shovel" && plantObject != null)
             {
                 Debug.Log("Ripped up");
+                toBeUsed.GetComponent<Item>().energyRequired = plant.currStage;
                 Destroy(plantObject);
                 Destroy(currentStageObject);
                 plantObject = null;
@@ -52,12 +54,16 @@ public class Soil : MonoBehaviour
             else
             {
                 Debug.Log(toBeUsed.name + " cannot be used here.");
+                return 0;
             }
         }
         else
         {
             Debug.Log("Not a valid item to use");
+            return 0;
         }
+
+        return toBeUsed.GetComponent<Item>().energyRequired;
     }
 
     public void Grow()

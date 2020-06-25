@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Tool : Item
+public class Item : MonoBehaviour
 {
-    public int powerUse;
+    public int energyRequired;
 }
