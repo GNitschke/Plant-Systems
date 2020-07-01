@@ -9,10 +9,17 @@ public class Soil : MonoBehaviour
     //public string name;
     public int growth;
 
+    public float shade;
+    public bool fertilized;
+    public float water;
+
+
     private GameObject plantObject;
     private GameObject currentStageObject;
     public Flora plant;
 
+    /*
+    [System.Serializable]
     public struct neighbors
     {
         public Soil up;
@@ -20,6 +27,8 @@ public class Soil : MonoBehaviour
         public Soil right;
         public Soil down;
     };
+    */
+    public Soil[] neighbors;
 
     void Start()
     {
@@ -46,7 +55,7 @@ public class Soil : MonoBehaviour
         {
             if (toBeUsed.name == "Gloves" && plantObject != null)
             {
-                toBeUsed.GetComponent<Item>().energyRequired = plant.currStage + 1;
+                toBeUsed.GetComponent<Item>().energyRequired = (int)Mathf.Floor((plant.currStage) * 0.5f) + 1;
                 if (!check)
                 {
                     Debug.Log("Ripped up");
@@ -91,13 +100,33 @@ public class Soil : MonoBehaviour
         {
             growth++;
             Flora.growthStage current = plant.stages[plant.currStage];
-            if (plant.currStage < plant.stages.Length - 1 && growth >= current.nextStage && Random.Range(0, current.variation) > 0.5)
+            if (growth >= current.nextStage && Random.Range(0, current.variation) > 0.5)
             {
-                plant.currStage++;
+                if (plant.currStage == plant.stages.Length - 1)
+                {
+                    Spread();
+                }
+                else
+                {
+                    plant.currStage++;
+                }
                 Destroy(currentStageObject);
                 currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform);
                 growth = 0;
             }
         }
+    }
+
+    public void Spread()
+    {
+        plant.currStage = 0;
+        foreach (Soil s in neighbors)
+        {
+            if (s.plantObject == null && Random.Range(0.0f, 1.0f) < 0.2)
+            {
+                s.Use(plantObject, false);
+            }
+        }
+        plant.currStage = plant.stages.Length - 2;
     }
 }

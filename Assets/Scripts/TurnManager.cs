@@ -17,6 +17,7 @@ public class TurnManager : MonoBehaviour
 
     private int energy;
     private Text energyUI;
+    private int maxEnergy = 5;
 
     private Text mouseInfo;
 
@@ -25,7 +26,7 @@ public class TurnManager : MonoBehaviour
     void Start()
     {
         turn = 0;
-        energy = 4;
+        energy = maxEnergy;
         currentItem = null;
         turnUI = transform.Find("Canvas").Find("Turn").GetComponent<Text>();
         turnUI.text = "Turn: " + turn;
@@ -61,7 +62,7 @@ public class TurnManager : MonoBehaviour
                         mI = "E: -" + e;
                     }
 
-                    if(energy < e || e == 101)
+                    if (energy < e || e == 101)
                     {
                         mouseInfo.color = Color.red;
                     }
@@ -95,7 +96,8 @@ public class TurnManager : MonoBehaviour
     {
         turn++;
         turnUI.text = "Turn: " + turn;
-        energy++;
+        if(energy < maxEnergy)
+            energy++;
         energyUI.text = "Energy: " + energy;
         for (int i = 0; i < boardWidth; i++)
         {

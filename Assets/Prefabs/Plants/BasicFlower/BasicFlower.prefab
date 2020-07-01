@@ -44,14 +44,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   energyRequired: 1
+  description: 
   stages:
   - nextStage: 3
     variation: 5
     model: {fileID: 7583440277733922870, guid: ff0002c1c5c8a2b489c5da21a5f4357c, type: 3}
   - nextStage: 4
-    variation: 1
+    variation: 2
     model: {fileID: 6873827742156729331, guid: 724889ed01a0fd440adc1125be31d7f8, type: 3}
-  - nextStage: 0
-    variation: 0
-    model: {fileID: 5716464481985457073, guid: 8ee09f5252791224685363a405f3d079, type: 3}
-  currStage: 1
+  - nextStage: 5
+    variation: 1
+    model: {fileID: 6873827742156729331, guid: e60f2d02f21840a4699884145b3ab666, type: 3}
+  - nextStage: 3
+    variation: 5
+    model: {fileID: 6873827742156729331, guid: 843d1c4643c5bba4f91aa4477c559a33, type: 3}
+  - nextStage: 3
+    variation: 7
+    model: {fileID: 6873827742156729331, guid: 27be2a970cdb4e54d98580225aad7601, type: 3}
+  - nextStage: 2
+    variation: 3
+    model: {fileID: 6873827742156729331, guid: bcdee878d42151b428878fe56a47491b, type: 3}
+  currStage: 0
