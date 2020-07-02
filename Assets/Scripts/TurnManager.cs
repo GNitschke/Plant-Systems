@@ -87,7 +87,27 @@ public class TurnManager : MonoBehaviour
         {
             for(int j = 0; j < boardLength; j++)
             {
-                board[i, j] = GameObject.Find("Field"+ i + "" + j).GetComponent<Soil>();
+                GameObject tile = Instantiate(field, new Vector3(i * 11, 0, j * 11), Quaternion.identity);
+                board[i, j] = tile.GetComponent<Soil>();
+                board[i, j].index = new int[2];
+                board[i, j].index[0] = i;
+                board[i, j].index[1] = j;
+                board[i, j].neighbors = new Soil[4];
+            }
+        }
+
+        for (int i = 0; i < boardWidth; i++)
+        {
+            for (int j = 0; j < boardLength; j++)
+            {
+                if (i != 0)
+                    board[i, j].neighbors[0] = board[i - 1, j];
+                if(i != boardWidth - 1)
+                    board[i, j].neighbors[1] = board[i + 1, j];
+                if (j != 0)
+                    board[i, j].neighbors[2] = board[i, j - 1];
+                if (j != boardLength- 1)
+                    board[i, j].neighbors[3] = board[i, j + 1];
             }
         }
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class Soil : MonoBehaviour
 {
     public TurnManager turnManager;
+    public int[] index;
 
     //public string name;
     public int growth;
@@ -28,6 +29,7 @@ public class Soil : MonoBehaviour
         public Soil down;
     };
     */
+    //neighbors[left, right, up, down]
     public Soil[] neighbors;
 
     void Start()
@@ -123,7 +125,7 @@ public class Soil : MonoBehaviour
         plant.currStage = 0;
         foreach (Soil s in neighbors)
         {
-            if (s.plantObject == null && Random.Range(0.0f, 1.0f) < 0.2)
+            if (s != null && s.plantObject == null) // && Random.Range(0.0f, 1.0f) < 0.2)
             {
                 s.Use(plantObject, false);
             }
