@@ -45,9 +45,9 @@ public class Soil : MonoBehaviour
             {
                 Debug.Log("Planted");
                 growth = 0;
-                plantObject = Instantiate(toBeUsed);
+                plantObject = Instantiate(toBeUsed, transform);
                 plant = plantObject.GetComponent<Flora>();
-                currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform);
+                currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform.position, Quaternion.Euler(0, Random.Range(0.0f, 360.0f), 0));
             }
             toBeUsed.GetComponent<Item>().energyRequired = toBeUsed.GetComponent<Flora>().currStage + 1;
         }
@@ -110,8 +110,9 @@ public class Soil : MonoBehaviour
                 {
                     plant.currStage++;
                 }
+                Quaternion offsetRotation = currentStageObject.transform.rotation;
                 Destroy(currentStageObject);
-                currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform);
+                currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform.position, offsetRotation);
                 growth = 0;
             }
         }
