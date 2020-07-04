@@ -32,6 +32,6 @@ public class CamTargetController : MonoBehaviour
                 cam.RotateAround(transform.position, transform.right, Time.deltaTime * Input.GetAxisRaw("Mouse Y") * -speed);
             }
         }
-        cam.Translate(0, 0, Input.mouseScrollDelta.y);
+        cam.Translate(0, 0, Input.mouseScrollDelta.y * speed/60.0f);
     }
 }
