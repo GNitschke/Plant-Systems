@@ -15,11 +15,14 @@ public class TurnManager : MonoBehaviour
     private int turn;
     private Text turnUI;
 
-    private int energy;
+    public int energy;
     private Text energyUI;
     private int maxEnergy = 5;
 
     private Text mouseInfo;
+
+    //Used by ItemSelection to block item use while selecting
+    public bool picking;
 
     public GameObject currentItem;
     // Start is called before the first frame update
@@ -37,48 +40,34 @@ public class TurnManager : MonoBehaviour
         GenerateBoard();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetEnergy(int e)
     {
-        
-        RaycastHit hit;
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        energy -= e;
+        energyUI.text = "Energy: " + energy;
+    }
 
-        if (Physics.Raycast(ray, out hit, float.PositiveInfinity, 1 << 9) && hit.transform.GetComponent<Soil>() != null)
+    public void DisplayEnergy(int e)
+    {
+        string mI = "X";
+        if (e != 101)
         {
-            if (currentItem != null)
-            {
-                int e = hit.transform.GetComponent<Soil>().Use(currentItem, true);
-                if (Input.GetMouseButtonUp(0) && energy >= e)
-                {
-                    energy -= hit.transform.GetComponent<Soil>().Use(currentItem, false);
-                    energyUI.text = "Energy: " + energy;
-                }
-                else
-                {
-                    string mI = "X";
-                    if(e != 101)
-                    {
-                        mI = "E: -" + e;
-                    }
+            mI = "E: -" + e;
+        }
 
-                    if (energy < e || e == 101)
-                    {
-                        mouseInfo.color = Color.red;
-                    }
-                    else
-                    {
-                        mouseInfo.color = Color.white;
-                    }
-                    mouseInfo.text = mI;
-                }
-            }
+        if (energy < e || e == 101)
+        {
+            mouseInfo.color = Color.red;
         }
         else
         {
-            mouseInfo.text = "";
+            mouseInfo.color = Color.white;
         }
-        
+        mouseInfo.text = mI;
+    }
+
+    public void ClearEnergy()
+    {
+        mouseInfo.text = "";
     }
 
     private void GenerateBoard()
