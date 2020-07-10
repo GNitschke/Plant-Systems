@@ -699,7 +699,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
-  eventSystem: {fileID: 0}
+  turnManager: {fileID: 0}
 --- !u!114 &1931342610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1253,6 +1253,8 @@ MonoBehaviour:
   boardWidth: 5
   boardLength: 8
   field: {fileID: 8755263493154438548, guid: ec0ef094208a1a24cb0c5aa9e00d5155, type: 3}
+  energy: 0
+  picking: 0
   currentItem: {fileID: 0}
 --- !u!1 &8500835037658424083
 GameObject:
