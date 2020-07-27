@@ -9,27 +9,19 @@ public class Soil : MonoBehaviour
 
     //public string name;
     public int growth;
+    public int underWatered;
 
     public float shade;
     public bool fertilized;
     public float water;
+    public bool weeds;
 
+    public bool infected;
 
     private GameObject plantObject;
     private GameObject currentStageObject;
     public Flora plant;
 
-    /*
-    [System.Serializable]
-    public struct neighbors
-    {
-        public Soil up;
-        public Soil left;
-        public Soil right;
-        public Soil down;
-    };
-    */
-    //neighbors[left, right, up, down]
     public Soil[] neighbors;
 
     void Start()
@@ -63,10 +55,15 @@ public class Soil : MonoBehaviour
                     if (!check)
                     {
                         Debug.Log("Ripped up");
-                        Destroy(plantObject);
-                        Destroy(currentStageObject);
-                        plantObject = null;
-                        plant = null;
+                        RemovePlant();
+                    }
+                }
+                if (toBeUsed.name == "Watering Can" && plantObject != null)
+                {
+                    if (!check)
+                    {
+                        Debug.Log("Watered");
+                        water += 2.0f;
                     }
                 }
                 else
@@ -134,7 +131,28 @@ public class Soil : MonoBehaviour
         {
             growth++;
             Flora.growthStage current = plant.stages[plant.currStage];
-            if (growth >= current.nextStage && Random.Range(0, current.variation) > 0.5)
+            if (water < current.waterUsage && !infected)
+                underWatered++;
+            else if(underWatered > 0)
+                underWatered--;
+
+
+            if (underWatered > current.nextStage)
+            {
+                RemovePlant();
+            }
+
+            float modifier = 1;
+            if (fertilized)
+            {
+                modifier *= 0.6f;
+            }
+            if (weeds)
+            {
+                modifier *= 1.5f;
+            }
+
+            if (growth >= current.nextStage * modifier)
             {
                 if (plant.currStage == plant.stages.Length - 1)
                 {
@@ -163,5 +181,13 @@ public class Soil : MonoBehaviour
             }
         }
         plant.currStage = plant.stages.Length - 2;
+    }
+
+    public void RemovePlant()
+    {
+        Destroy(plantObject);
+        Destroy(currentStageObject);
+        plantObject = null;
+        plant = null;
     }
 }
