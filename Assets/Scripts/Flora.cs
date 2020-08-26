@@ -9,9 +9,8 @@ public class Flora : Item
     public struct growthStage
     {
         public int nextStage;
-        //public float variation;
         public GameObject model;
-        public float shade;
+        public float sun;
         public float waterUsage;
     };
  

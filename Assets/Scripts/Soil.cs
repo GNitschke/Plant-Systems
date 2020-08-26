@@ -9,7 +9,7 @@ public class Soil : MonoBehaviour
 
     //public string name;
     public int growth;
-    public int underWatered;
+    public int wilt;
 
     public float shade;
     public bool fertilized;
@@ -127,45 +127,50 @@ public class Soil : MonoBehaviour
 
     public void Grow()
     {
-        if(plantObject != null)
+        if(plantObject != null) //make sure there is a plant to grow
         {
-            growth++;
             Flora.growthStage current = plant.stages[plant.currStage];
-            if (water < current.waterUsage && !infected)
-                underWatered++;
-            else if(underWatered > 0)
-                underWatered--;
+            if (water < current.waterUsage && !infected) //check if it has enough water
+            {
+                wilt++; //if not add to the plant's wiltedness
+            }
+            else //if so it can grow a bit and get a bit less wilted
+            {
+                if (wilt > 0)
+                    wilt--;
+                growth++;
+            }
 
-
-            if (underWatered > current.nextStage)
+            //if it has more wilt than growth need for the next stage plus the current stage number the plant dies
+            if (wilt > current.nextStage + plant.currStage) //adding the stage makes it harder for a more advanced plant to wilt despite needing less turns to get to the next stage
             {
                 RemovePlant();
             }
 
-            float modifier = 1;
+            float modifier = 1; //modifier for turns needed to grow
             if (fertilized)
             {
-                modifier *= 0.6f;
+                modifier *= 0.6f; //makes it easier if fertilized
             }
             if (weeds)
             {
-                modifier *= 1.5f;
+                modifier *= 1.5f; //makes it harder if there are weeds
             }
 
-            if (growth >= current.nextStage * modifier)
+            if (growth >= current.nextStage * modifier) //if it has enough growth
             {
-                if (plant.currStage == plant.stages.Length - 1)
+                if (plant.currStage == plant.stages.Length - 1) //if the plant has seeds then it will spread
                 {
                     Spread();
                 }
                 else
                 {
-                    plant.currStage++;
+                    plant.currStage++; //otherwise it will just advance to the next stage
                 }
                 Quaternion offsetRotation = currentStageObject.transform.rotation;
-                Destroy(currentStageObject);
-                currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform.position, offsetRotation);
-                growth = 0;
+                Destroy(currentStageObject); //get rid of old stage
+                currentStageObject = Instantiate(plant.stages[plant.currStage].model, transform.position, offsetRotation); //plant the next stage at an offset rotation so its less grid like
+                growth = 0; //reset growth for the new stage
             }
         }
     }
@@ -173,14 +178,14 @@ public class Soil : MonoBehaviour
     public void Spread()
     {
         plant.currStage = 0;
-        foreach (Soil s in neighbors)
+        foreach (Soil s in neighbors) //in each of the plant's neighboring soil tiles
         {
             if (s != null && s.plantObject == null) // && Random.Range(0.0f, 1.0f) < 0.2)
             {
-                s.Use(plantObject, false);
+                s.Use(plantObject, false); //plant a new version of the plant 
             }
         }
-        plant.currStage = plant.stages.Length - 2;
+        plant.currStage = plant.stages.Length - 2; //set the original plant back to the stage before seeds
     }
 
     public void RemovePlant()
