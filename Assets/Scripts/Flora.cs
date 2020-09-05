@@ -10,7 +10,7 @@ public class Flora : Item
     {
         public int nextStage;
         public GameObject model;
-        public float sun;
+        public float sunNeeded;
         public float waterUsage;
     };
  

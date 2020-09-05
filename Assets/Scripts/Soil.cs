@@ -11,7 +11,7 @@ public class Soil : MonoBehaviour
     public int growth;
     public int wilt;
 
-    public float shade;
+    public float sun;
     public bool fertilized;
     public float water;
     public bool weeds;
@@ -130,7 +130,7 @@ public class Soil : MonoBehaviour
         if(plantObject != null) //make sure there is a plant to grow
         {
             Flora.growthStage current = plant.stages[plant.currStage];
-            if (water < current.waterUsage && !infected) //check if it has enough water
+            if ((water < current.waterUsage || sun < current.sunNeeded) && !infected) //check if it has enough water and sun
             {
                 wilt++; //if not add to the plant's wiltedness
             }
