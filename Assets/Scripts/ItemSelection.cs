@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 
 public class ItemSelection : MonoBehaviour
 {
+    /*
     public Camera cam;
     public TurnManager turnManager;
 
@@ -72,4 +73,5 @@ public class ItemSelection : MonoBehaviour
         up = false;
         turnManager.picking = false;
     }
+    */
 }

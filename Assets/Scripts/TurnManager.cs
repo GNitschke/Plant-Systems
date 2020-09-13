@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class TurnManager : MonoBehaviour
 {
+    /*
     public int boardWidth = 5;
     public int boardLength = 5;
 
@@ -122,4 +123,5 @@ public class TurnManager : MonoBehaviour
         currentItem = toBeUsed;
         Debug.Log("Selected: " + currentItem.name);
     }
+    */
 }
