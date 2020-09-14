@@ -25,6 +25,7 @@ public class Soil : MonoBehaviour
         if (flora == null)
         {
             flora = Instantiate(plant.gameObject, transform).GetComponent<Flora>();
+            StartCoroutine(growPlant());
         }
     }
 
@@ -32,5 +33,12 @@ public class Soil : MonoBehaviour
     {
         Destroy(flora.gameObject);
         flora = null;
+    }
+
+    IEnumerator growPlant()
+    {
+        yield return new WaitForSeconds(Random.Range(3, 6));
+        flora.Grow(this);
+        StartCoroutine(growPlant());
     }
 }

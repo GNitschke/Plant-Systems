@@ -58,10 +58,6 @@ public class PlayerController : MonoBehaviour
                 {
                     hitSoil.Plant(currentPlant.GetComponent<Flora>());
                 }
-                else
-                {
-                    hitSoil.flora.Grow(hitSoil);
-                }
             }
         }
     }

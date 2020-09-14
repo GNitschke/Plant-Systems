@@ -22,12 +22,16 @@ public class Flora : Item
     public float toughness;
 
     //Condition
-    private int currStage = 0;
-    private int stageGrowth;
-    private int wilt;
+    public int currStage = 0;
+    public int stageGrowth;
+    public int wilt;
 
     public void OnEnable()
     {
+        if(transform.childCount > 0)
+        {
+            Destroy(transform.GetChild(0).gameObject);
+        }
         Instantiate(stages[currStage].model, transform);
     }
 
@@ -66,8 +70,8 @@ public class Flora : Item
             if (currStage == stages.Length - 1) //if the plant has seeds then it will spread
             {
                 Destroy(transform.GetChild(0).gameObject);
-                Instantiate(stages[currStage - 1].model, transform);
                 Spread();
+                Instantiate(stages[currStage].model, transform);
             }
             else
             {
@@ -83,15 +87,21 @@ public class Flora : Item
     {
         currStage = 0;
         Collider[] nearby = Physics.OverlapSphere(transform.position, 6.0f);
+        int count = 0;
         foreach (Collider collider in nearby) //in each of the plant's neighboring soil tiles
         {
             if (collider.GetComponent<Soil>() != null)
             {
                 Soil s = collider.GetComponent<Soil>();
-                if (s.flora == null) // && Random.Range(0.0f, 1.0f) < 0.2)
+                if (s.flora == null && Random.Range(0.0f, 1.0f) < 0.2)
                 {
-                    s.Plant(this); //plant a new version of the plant 
+                    s.Plant(this); //plant a new version of the plant
+                    count++;
                 }
+            }
+            if(count > 3)
+            {
+                break;
             }
         }
         currStage = stages.Length - 2; //set the original plant back to the stage before seeds
