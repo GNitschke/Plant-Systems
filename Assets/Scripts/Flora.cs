@@ -17,14 +17,16 @@ public class Flora : Item
     public Stage[] stages;
 
     //Growth Factors
-    public float idealSun; //0-1
-    public float idealWater; //0-1
-    public float toughness;
+    public Vector2 idealSun; //0-1: min, max
+    public Vector2 idealWater; //0-1: min, max
 
     //Condition
     public int currStage = 0;
     public int stageGrowth;
+    public float currentWater;
+    public float currentSun;
     public int wilt;
+    public bool old;
 
     public void OnEnable()
     {
@@ -33,12 +35,13 @@ public class Flora : Item
             Destroy(transform.GetChild(0).gameObject);
         }
         Instantiate(stages[currStage].model, transform);
+        old = false;
     }
 
     public void Grow(Soil soil)
     {
         Flora.Stage current = stages[currStage];
-        if ((soil.water < idealWater - toughness || soil.sun < idealSun - toughness)) //check if it has enough water and sun
+        if (old || (currentWater > idealWater.x && currentWater < idealWater.y) || (currentWater > idealSun.x && currentSun < idealSun.y)) //check if it has the right water and sun
         {
             wilt++; //if not add to the plant's wiltedness
         }
@@ -71,6 +74,7 @@ public class Flora : Item
             {
                 Destroy(transform.GetChild(0).gameObject);
                 Spread();
+                old = true;
                 Instantiate(stages[currStage].model, transform);
             }
             else
@@ -86,7 +90,7 @@ public class Flora : Item
     public void Spread()
     {
         currStage = 0;
-        Collider[] nearby = Physics.OverlapSphere(transform.position, 6.0f);
+        Collider[] nearby = Physics.OverlapSphere(transform.position, 3.0f);
         int count = 0;
         foreach (Collider collider in nearby) //in each of the plant's neighboring soil tiles
         {

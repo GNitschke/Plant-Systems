@@ -37,7 +37,7 @@ public class Soil : MonoBehaviour
 
     IEnumerator growPlant()
     {
-        yield return new WaitForSeconds(Random.Range(3, 6));
+        yield return new WaitForSeconds(Random.Range(0.1f, 3.0f));
         flora.Grow(this);
         StartCoroutine(growPlant());
     }
